@@ -1,4 +1,5 @@
 import asyncio
+import logging
 
 from aiogram import Bot, Dispatcher, types, F
 from aiogram.client.default import DefaultBotProperties
@@ -11,6 +12,7 @@ from constants.messages_ import CANCEL_, CANCELED_SUCCESSFUL
 from keyboards.crm_keyboard import kb_crm
 from routers import register_, add_channel_, show_channel_, request_join_, create_link_, delete_link_, delete_channel_
 
+logging.basicConfig(level=logging.INFO)
 storage = MemoryStorage()
 default_properties = DefaultBotProperties(parse_mode=ParseMode.HTML)
 bot = Bot(token=BOT_TOKEN, default=default_properties)
