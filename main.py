@@ -12,10 +12,7 @@ from constants.messages_ import CANCEL_, CANCELED_SUCCESSFUL
 from keyboards.crm_keyboard import kb_crm
 from routers import register_, add_channel_, show_channel_, request_join_, create_link_, delete_link_, delete_channel_
 
-logging.basicConfig(level=logging.INFO)
 storage = MemoryStorage()
-default_properties = DefaultBotProperties(parse_mode=ParseMode.HTML)
-bot = Bot(token=BOT_TOKEN, default=default_properties)
 dp = Dispatcher(storage=storage)
 dp.include_routers(
     register_.register_router,
@@ -35,6 +32,10 @@ async def cancel_(message: types.Message, state: FSMContext):
 
 
 async def main():
+    logging.basicConfig(level=logging.INFO)
+    default_properties = DefaultBotProperties(parse_mode=ParseMode.HTML)
+    bot = Bot(token=BOT_TOKEN, default=default_properties)
+
     try:
         await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
     except Exception as e:
