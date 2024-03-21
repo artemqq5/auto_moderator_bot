@@ -16,16 +16,14 @@ async def permission_delete_channel(message: types.Message, state: FSMContext, b
     if message.text == YES:
         try:
             await bot.leave_chat(data['channel_id'])
-            if not ChannelRepository().delete_channel(data['channel_id']):
-                raise Exception
-
-            await state.clear()
-            await message.answer(DELETE_CHANNEL_SUCCESSFUL, reply_markup=kb_crm.as_markup())
-
         except Exception as e:
             print(f"permission_delete_channel: {e}")
             content = Text(DELETE_CHANNEL_FAIL, "\n", Code(e))
             await message.answer(**content.as_kwargs())
+        finally:
+            if ChannelRepository().delete_channel(data['channel_id']):
+                await state.clear()
+                await message.answer(DELETE_CHANNEL_SUCCESSFUL, reply_markup=kb_crm.as_markup())
 
         return
 
