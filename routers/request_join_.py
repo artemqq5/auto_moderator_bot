@@ -11,6 +11,7 @@ async def handle_join_request(chat_join_request: types.ChatJoinRequest, bot: Bot
     link = chat_join_request.invite_link.invite_link
 
     link_from_db = LinkRepository().get_link(link)
+    await chat_join_request.approve()
 
     try:
         if link_from_db:
@@ -21,7 +22,6 @@ async def handle_join_request(chat_join_request: types.ChatJoinRequest, bot: Bot
 
     except Exception as e:
         print(f"handle_join_request: {e} | @{chat_join_request.from_user.username}")
-    finally:
-        await chat_join_request.approve()
+
 
 

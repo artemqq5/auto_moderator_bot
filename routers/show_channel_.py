@@ -7,7 +7,7 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 from accesss.check_registered import is_user_registered_admin
 from constants.buttons_ import SHOW_CHANNELS
 from constants.messages_ import LIST_CHANNELS_EMPTY, SET_NAME_FOR_LINK, LIST_LINKS_EMPTY, WITHOUT_NAME, MAX_20_LINKS, \
-    MANAGMENT_LINKS, DELETE_CHANNEL
+    MANAGMENT_LINKS, DELETE_CHANNEL, WITHOUT_HELLO_MESSAGE
 from data.repositories.ChannelRepository import ChannelRepository
 from data.repositories.LinkRepository import LinkRepository
 from keyboards.crm_keyboard import kb_skip, kb_cencel, kb_delete_channel
@@ -44,7 +44,8 @@ async def show_channel_handler(message: types.Message, bot: Bot):
             [InlineKeyboardButton(text="Видалити канал", callback_data=f"{channel['channel_id']}#####deletechannel")],
             [InlineKeyboardButton(text="Створити посилання",
                                   callback_data=f"{channel['channel_id']}#####{channel['title']}#####createlink")],
-            [InlineKeyboardButton(text="Управляти посиланнями", callback_data=f"{channel['channel_id']}#####managelinks")]
+            [InlineKeyboardButton(text="Управляти посиланнями",
+                                  callback_data=f"{channel['channel_id']}#####managelinks")]
         ]
         await message.answer(body_message, reply_markup=InlineKeyboardMarkup(inline_keyboard=kb))
 
@@ -67,9 +68,11 @@ async def managelink_cannel_handler(callback: types.CallbackQuery):
         users_join += link['users_join']
         content = Text(
             Bold(link['link_title'] if link['link_title'] is not None else WITHOUT_NAME), "\n\n",
+            link['hello_message'] if link['hello_message'] is not None else WITHOUT_HELLO_MESSAGE, "\n\n",
             Bold(f"Користувачів доєдналося {users_join}"), "\n", Code(link['link'])
         )
-        kb = InlineKeyboardBuilder([[InlineKeyboardButton(text="Видалити", callback_data=f"{link['link']}#####{channel_id}#####deletelink")]])
+        kb = InlineKeyboardBuilder(
+            [[InlineKeyboardButton(text="Видалити", callback_data=f"{link['link']}#####{channel_id}#####deletelink")]])
         await callback.message.answer(**content.as_kwargs(), reply_markup=kb.as_markup())
 
     await callback.message.answer(MANAGMENT_LINKS)
