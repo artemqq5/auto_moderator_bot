@@ -66,14 +66,13 @@ async def managelink_cannel_handler(callback: types.CallbackQuery):
     for link in links:
         users_join = 0
         users_join += link['users_join']
-        content = Text(
-            Bold(link['link_title'] if link['link_title'] is not None else WITHOUT_NAME), "\n\n",
-            link['hello_message'] if link['hello_message'] is not None else WITHOUT_HELLO_MESSAGE, "\n\n",
-            Bold(f"Користувачів доєдналося {users_join}"), "\n", Code(link['link'])
-        )
+        content = (f"<b>{link['link_title'] if link['link_title'] is not None else WITHOUT_NAME}</b>\n\n"
+                   f"{link['hello_message'] if link['hello_message'] is not None else WITHOUT_HELLO_MESSAGE}\n\n"
+                   f"<b>Користувачів доєдналося</b> {users_join}\n <code>{link['link']}</code>")
+
         kb = InlineKeyboardBuilder(
             [[InlineKeyboardButton(text="Видалити", callback_data=f"{link['link']}#####{channel_id}#####deletelink")]])
-        await callback.message.answer(**content.as_kwargs(), reply_markup=kb.as_markup())
+        await callback.message.answer(content, reply_markup=kb.as_markup())
 
     await callback.message.answer(MANAGMENT_LINKS)
 
