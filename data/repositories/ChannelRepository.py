@@ -14,9 +14,9 @@ class ChannelRepository(DefaultDataBase):
         COMMAND_ = "INSERT INTO `channels` (`channel_id`, `title`, `user_id`) VALUES (%s, %s, %s);"
         return self._insert(COMMAND_, (channel_id, title, user_id))
 
-    def get_all_channels(self, user_id):
-        COMMAND_ = "SELECT * FROM `channels` WHERE `user_id` = %s ORDER BY `_at` DESC;"
-        return self._select_all(COMMAND_, (user_id,))
+    def get_all_channels(self):
+        COMMAND_ = "SELECT * FROM `channels` ORDER BY `_at` DESC;"
+        return self._select_all(COMMAND_)
 
     def delete_channel(self, channel_id):
         COMMAND_ = "DELETE FROM `channels` WHERE `channel_id` = %s;"

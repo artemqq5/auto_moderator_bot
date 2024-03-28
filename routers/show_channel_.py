@@ -22,7 +22,7 @@ async def show_channel_handler(message: types.Message, bot: Bot):
     if not await is_user_registered_admin(message):
         return
 
-    list_channels = ChannelRepository().get_all_channels(message.from_user.id)
+    list_channels = ChannelRepository().get_all_channels()
 
     if not list_channels:
         await message.answer(LIST_CHANNELS_EMPTY)
