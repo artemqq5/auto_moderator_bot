@@ -12,11 +12,10 @@ router = Router()
 @router.chat_join_request()
 async def handle_join_request(chat_join_request: types.ChatJoinRequest, bot: Bot):
     user = chat_join_request.from_user
-    UserRepository().add_user(user.id, user.username, user.first_name, user.last_name)
-
     link = chat_join_request.invite_link.invite_link
-
     link_from_db = LinkRepository().get_link(link)
+
+    UserRepository().add_user(user.id, user.username, user.first_name, user.last_name, link_from_db['channel_id'])
 
     try:
         try:

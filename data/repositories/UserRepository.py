@@ -6,9 +6,9 @@ class UserRepository(DefaultDataBase):
     def __init__(self):
         super().__init__()
 
-    def add_user(self, user_id, username, firstname, lastname):
-        command = "INSERT INTO `users` (`user_id`, `username`, `firstname`, `lastname`) VALUES (%s, %s, %s, %s);"
-        return self._insert(command, (user_id, username, firstname, lastname))
+    def add_user(self, user_id, username, firstname, lastname, channel_id=None):
+        command = "INSERT INTO `users` (`user_id`, `username`, `firstname`, `lastname`, `channel_id`) VALUES (%s, %s, %s, %s, %s);"
+        return self._insert(command, (user_id, username, firstname, lastname, channel_id))
 
     def get_user(self, user_id):
         command = "SELECT * FROM `users` WHERE `user_id` = %s;"
