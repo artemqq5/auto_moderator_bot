@@ -5,6 +5,7 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from data.repositories.LinkRepository import LinkRepository
 from data.repositories.UserRepository import UserRepository
+from notification.AddUserNotify import AddUserNotify
 
 router = Router()
 
@@ -15,7 +16,9 @@ async def handle_join_request(chat_join_request: types.ChatJoinRequest, bot: Bot
     link = chat_join_request.invite_link.invite_link
     link_from_db = LinkRepository().get_link(link)
 
-    UserRepository().add_user(user.id, user.username, user.first_name, user.last_name, link_from_db['channel_id'])
+    UserRepository().add_user(user.id, user.username, user.first_name, user.last_name, link_from_db['channel_id'],
+                              link_from_db['channel_title'])
+    await AddUserNotify.user_activate_bot(user.id, bot, link_from_db['channel_title'])
 
     try:
         try:
@@ -39,5 +42,3 @@ async def handle_join_request(chat_join_request: types.ChatJoinRequest, bot: Bot
                                    reply_markup=kb_join.as_markup())
     except Exception as e:
         print(f"handle_join_request: {e} | @{chat_join_request.from_user.username}")
-
-
