@@ -82,10 +82,6 @@ async def createlink_cannel_handler(callback: types.CallbackQuery, state: FSMCon
     channel_id = callback.data.split("#####")[0]
     channel_title = callback.data.split("#####")[1]
 
-    if len(LinkRepository().get_all(channel_id)) >= 20:
-        await callback.message.answer(MAX_20_LINKS)
-        return
-
     await state.set_state(StateCreateLink.name_of_link)
     await state.update_data(channel_id=channel_id)
     await state.update_data(channel_title=channel_title)
