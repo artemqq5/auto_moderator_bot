@@ -24,6 +24,7 @@ async def handle_join_request(chat_join_request: types.ChatJoinRequest, bot: Bot
         try:
             await chat_join_request.approve()
         except TelegramBadRequest as e:
+            print(e)
             if "USER_ALREADY_PARTICIPANT" not in str(e):
                 raise Exception
 
