@@ -21,12 +21,7 @@ async def handle_join_request(chat_join_request: types.ChatJoinRequest, bot: Bot
     await AddUserNotify.user_activate_bot(user.id, bot, link_from_db['channel_title'])
 
     try:
-        try:
-            await chat_join_request.approve()
-        except TelegramBadRequest as e:
-            print(e)
-            if "USER_ALREADY_PARTICIPANT" not in str(e):
-                raise Exception
+        await chat_join_request.approve()
 
         if not link_from_db:
             raise Exception
@@ -42,4 +37,4 @@ async def handle_join_request(chat_join_request: types.ChatJoinRequest, bot: Bot
                                    text=link_from_db['hello_message'],
                                    reply_markup=kb_join.as_markup())
     except Exception as e:
-        print(f"handle_join_request: {e} | @{chat_join_request.from_user.username}")
+        print(f"handle_join_request: @{chat_join_request.from_user.username}\n{e}")
