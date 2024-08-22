@@ -35,7 +35,7 @@ async def forward_message_handler(message: types.Message, bot: Bot):
         await message.answer(BOT_IS_NO_ADMIN_THAT_CHANNEL)
         return
 
-    if ChannelRepository().get_channel(id_channel, message.from_user.id):
+    if ChannelRepository().get_channel(id_channel):
         await message.answer(CHANNEL_ALREADY_ADDED_TO_YOU)
         return
 

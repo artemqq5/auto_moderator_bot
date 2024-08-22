@@ -14,6 +14,10 @@ class UserRepository(DefaultDataBase):
         command = "SELECT * FROM `users` WHERE `user_id` = %s;"
         return self._select_one(command, (user_id,))
 
+    def get_users_by_channel(self, channel_id):
+        command = "SELECT * FROM `users` WHERE `channel_id` = %s;"
+        return self._select_all(command, (channel_id,))
+
     def admins(self):
         command = "SELECT * FROM `users` WHERE `role` = 'admin';"
         return self._select_all(command)

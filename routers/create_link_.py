@@ -4,12 +4,24 @@ from aiogram.utils.formatting import Text, Code, Bold
 
 from constants.messages_ import SKIP, LONG_NAME_FOR_LINK, SET_HELLO_MESSAGE_LINK, CANCELED_SUCCESSFUL, \
     LINK_PREPARE_CAMPLETED, CREATE_LINK_NOW, PREVIEW_HELLO_MESSAGE, PREVIEW_HELLO_MESSAGE_CONSTRUCT, \
-    YOU_HASNT_HELLO_MESSAGE, ERROR_LINK_CREATED, SUCCESSFUL_LINK_CREATED, WITHOUT_NAME
+    YOU_HASNT_HELLO_MESSAGE, ERROR_LINK_CREATED, SUCCESSFUL_LINK_CREATED, WITHOUT_NAME, SET_NAME_FOR_LINK
 from data.repositories.LinkRepository import LinkRepository
 from keyboards.crm_keyboard import kb_skip, kb_create_link, kb_crm
 from states.StateCreateLink import StateCreateLink
 
 router = Router()
+
+
+@router.callback_query(F.data.contains("createlink"))
+async def createlink_cannel_handler(callback: types.CallbackQuery, state: FSMContext):
+    channel_id = callback.data.split("#####")[0]
+    channel_title = callback.data.split("#####")[1]
+
+    await state.set_state(StateCreateLink.name_of_link)
+    await state.update_data(channel_id=channel_id)
+    await state.update_data(channel_title=channel_title)
+
+    await callback.message.answer(SET_NAME_FOR_LINK, reply_markup=kb_skip.as_markup())
 
 
 @router.message(StateCreateLink.name_of_link)

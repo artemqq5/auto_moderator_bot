@@ -10,7 +10,8 @@ from aiogram.fsm.storage.memory import MemoryStorage
 from config import BOT_TOKEN
 from constants.messages_ import CANCEL_, CANCELED_SUCCESSFUL
 from keyboards.crm_keyboard import kb_crm
-from routers import register_, add_channel_, show_channel_, request_join_, create_link_, delete_link_, delete_channel_
+from routers import register_, add_channel_, show_channel_, request_join_, create_link_, delete_link_, delete_channel_, \
+    show_links
 
 storage = MemoryStorage()
 dp = Dispatcher(storage=storage)
@@ -18,6 +19,7 @@ dp.include_routers(
     register_.register_router,
     add_channel_.router,
     show_channel_.router,
+    show_links.router,
     create_link_.router,
     delete_link_.router,
     delete_channel_.router,
