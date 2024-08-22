@@ -11,6 +11,7 @@ from data.repositories.LinkRepository import LinkRepository
 from keyboards.crm_keyboard import kb_skip, kb_delete_channel
 from keyboards.kb_channels import kb_channel_choice, ChannelChoice, ChannelNavigation, BackChannelList, \
     kb_channel_manage
+from keyboards.kb_links import BackChannel
 from states.StateCreateLink import StateCreateLink
 from states.StateDeleteChannel import StateDeleteChannel
 
@@ -64,3 +65,5 @@ async def delete_cannel_handler(callback: types.CallbackQuery, state: FSMContext
     await state.set_state(StateDeleteChannel.permission)
     await state.update_data(channel_id=channel_id)
     await callback.message.answer(DELETE_CHANNEL, reply_markup=kb_delete_channel.as_markup())
+
+

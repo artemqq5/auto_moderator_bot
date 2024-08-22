@@ -2,9 +2,10 @@ from aiogram import Router, F, types
 from aiogram.fsm.context import FSMContext
 
 from constants.messages_ import WITHOUT_NAME, MANAGMENT_LINKS, WITHOUT_HELLO_MESSAGE
+from data.repositories.ChannelRepository import ChannelRepository
 from data.repositories.LinkRepository import LinkRepository
-from keyboards.kb_channels import ChannelNavigation, BackChannelList
-from keyboards.kb_links import kb_link_choice, LinkChoice, kb_link_manage, LinkNavigation, BackLinkList
+from keyboards.kb_channels import ChannelNavigation, BackChannelList, kb_channel_choice
+from keyboards.kb_links import kb_link_choice, LinkChoice, kb_link_manage, LinkNavigation, BackLinkList, BackChannel
 
 router = Router()
 
@@ -45,3 +46,10 @@ async def choice_link(callback: types.CallbackQuery):
                f"<b>Користувачів доєдналося</b> {users_join}\n <code>{link['link']}</code>")
 
     await callback.message.answer(content, reply_markup=kb_link_manage(link))
+
+
+@router.callback_query(BackChannel.filter())
+async def back_channel(callback: types.CallbackQuery, state: FSMContext):
+    list_channels = ChannelRepository().get_all_channels()
+    await callback.message.edit_text("Канали", reply_markup=kb_channel_choice(list_channels, current_page=1))
+

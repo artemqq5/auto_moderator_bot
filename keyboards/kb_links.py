@@ -61,10 +61,18 @@ def kb_link_choice(links, current_page=1):
 
         inline_kb.append(nav)
 
+    inline_kb.append(
+        [InlineKeyboardButton(text="Назад", callback_data=BackChannel().pack())]
+    )
+
     return InlineKeyboardMarkup(inline_keyboard=inline_kb)
 
 
 class BackLinkList(CallbackData, prefix="BackLinkList"):
+    pass
+
+
+class BackChannel(CallbackData, prefix="BackChannel"):
     pass
 
 
